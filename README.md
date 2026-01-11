@@ -467,6 +467,6 @@ For questions or collaboration inquiries, please contact:
 
 **If you find this project useful, please consider giving it a star!**
 
-Made with love by [Your Name]
+Made with love by hj
 
 </div>
