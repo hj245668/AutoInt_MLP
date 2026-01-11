@@ -2,11 +2,13 @@
 
 [ 1 ]  Overview
 
-본 프로젝트는 AutoInt(Automatic Feature Interaction Learning)와 AutoInt+MLP 모델을 활용한 영화 추천 시스템입니다. MovieLens 1M 데이터셋을 기반으로 사용자의 과거 시청 이력과 평점 데이터를 분석하여 개인화된 영화 추천을 제공합니다.
+본 프로젝트는 AutoInt(Automatic Feature Interaction Learning)와 AutoInt+MLP 모델을 활용한 영화 추천 시스템입니다. 
+MovieLens 1M 데이터셋을 기반으로 사용자의 과거 시청 이력과 평점 데이터를 분석하여 개인화된 영화 추천을 제공합니다.
 
 [ 2 ] System Architecture
 
 1. Model Architecture
+   
 1.1 AutoInt Model
 AutoInt는 Multi-Head Self-Attention 메커니즘을 활용하여 feature 간의 고차원 상호작용을 자동으로 학습하는 모델입니다.
 
@@ -36,7 +38,7 @@ Batch Normalization (optional)
 Fusion Layer: AutoInt 출력과 DNN 출력을 결합하여 최종 예측
 
 2. Data Pipeline
-3. 
+   
 Raw Data (MovieLens 1M)
     ↓
 Data Preprocessing
@@ -61,12 +63,17 @@ Rating Scale: 1-5 (정수)
 Time Period: 2000-2003
 
 Feature Schema
-Feature            Type             Description            Cardinality  
-user_id            Categorical      사용자 식별자           6,040
-movie_id           Categorical      영화 식별자             3,706
-rating_year        Categorical      평점 부여 연도          4  
-rating_month       Categorical      평점 부여 월            12  
-rating_decade      Categorical      평점 부여 연대          -movie_decadeCategorical영화 제작 연대10movie_yearCategorical영화 제작 연도81genre1, genre2, genre3Categorical영화 장르 (최대 3개)18genderCategorical사용자 성별2ageCategorical사용자 연령대7occupationCategorical사용자 직업21zipCategorical사용자 우편번호3,439
+Feature                    Type             Description            Cardinality  
+user_id                    Categorical      사용자 식별자           6,040
+movie_id                   Categorical      영화 식별자             3,706
+rating_year                Categorical      평점 부여 연도          4  
+rating_month               Categorical      평점 부여 월            12  
+rating_decade              Categorical      평점 부여 연대          -
+movie_decade               Categorical      영화 제작 연대          10    
+movie_year                 Categorical      영화 제작 연도          81
+genre1, genre2, genre3     Categorical      영화 장르 (최대 3개)    18
+gender                     Categorical      사용자 성별             2
+age                        Categorical      사용자 연령대           7occupationCategorical사용자 직업21zipCategorical사용자 우편번호3,439
 Total Field Dimensions: [6040, 3706, 10, 81, 4, 12, 1, 18, 18, 16, 2, 7, 21, 3439]
 Training Configuration
 Hyperparameters
