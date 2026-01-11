@@ -1,5 +1,10 @@
 ## Movie Recommendation System with AutoInt and AutoInt+MLP
 
+```diff
++AutoInt, AutoInt+MLP
++streamlit run movie_rec_app.py
+```
+
 [ 1 ]  Overview
 
 본 프로젝트는 AutoInt(Automatic Feature Interaction Learning)와 AutoInt+MLP 모델을 활용한 영화 추천 시스템입니다. 
