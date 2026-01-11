@@ -1,7 +1,8 @@
 ## Movie Recommendation System with AutoInt and AutoInt+MLP
-
+```diff
 + AutoInt, AutoInt+MLP
 ! streamlit run movie_rec_app.py
+```
 
 [ 1 ]  Overview
 
@@ -58,15 +59,16 @@ Evaluation & Inference
 
 Dataset
 MovieLens 1M Dataset
-
-Users: 6,040명
-Movies: 3,706편
-Ratings: 1,000,209개
-Rating Scale: 1-5 (정수)
-Time Period: 2000-2003
+- Users: 6,040명
+- Movies: 3,706편
+- Ratings: 1,000,209개
+- Rating Scale: 1-5 (정수)
+- Time Period: 2000-2003
 
 Feature Schema
+
 Feature                    Type             Description            Cardinality  
+-------------------------------------------------------------------------
 user_id                    Categorical      사용자 식별자           6,040
 movie_id                   Categorical      영화 식별자             3,706
 rating_year                Categorical      평점 부여 연도          4  
@@ -76,10 +78,16 @@ movie_decade               Categorical      영화 제작 연대          10
 movie_year                 Categorical      영화 제작 연도          81
 genre1, genre2, genre3     Categorical      영화 장르 (최대 3개)    18
 gender                     Categorical      사용자 성별             2
-age                        Categorical      사용자 연령대           7occupationCategorical사용자 직업21zipCategorical사용자 우편번호3,439
+age                        Categorical      사용자 연령대           7
+occupation                 Categorical      사용자 직업             21
+zip                        Categorical      사용자 우편번호         3,439
+-------------------------------------------------------------------------
 Total Field Dimensions: [6040, 3706, 10, 81, 4, 12, 1, 18, 18, 16, 2, 7, 21, 3439]
+
 Training Configuration
+
 Hyperparameters
+```diff
 python# Model Parameters
 embedding_dim = 16
 att_layer_num = 3
@@ -99,45 +107,49 @@ loss_function = BinaryCrossentropy
 # Regularization
 l2_reg_dnn = 0
 l2_reg_embedding = 1e-5
-```
 
 ### Training Results
 
 #### AutoInt Model
-```
 Epoch 1/5: loss: 0.6813, val_loss: 0.6505
 Epoch 2/5: loss: 0.6221, val_loss: 0.5944
 Epoch 3/5: loss: 0.5707, val_loss: 0.5543
 Epoch 4/5: loss: 0.5487, val_loss: 0.5467
 Epoch 5/5: loss: 0.5430, val_loss: 0.5446
-```
+
+
 
 **Loss Reduction**: 
 - Training loss: 0.6813 → 0.5430 (20.3% improvement)
 - Validation loss: 0.6505 → 0.5446 (16.3% improvement)
 
 #### AutoInt+MLP Model
-```
+
 Epoch 1/5: loss: 0.6760, val_loss: 0.6468
 Epoch 2/5: loss: 0.6180, val_loss: 0.5896
 Epoch 3/5: loss: 0.5660, val_loss: 0.5500
 Epoch 4/5: loss: 0.5434, val_loss: 0.5435
 Epoch 5/5: loss: 0.5377, val_loss: 0.5411
+```
 Loss Reduction:
-
-Training loss: 0.6760 → 0.5377 (20.5% improvement)
-Validation loss: 0.6468 → 0.5411 (16.3% improvement)
+- Training loss: 0.6760 → 0.5377 (20.5% improvement)
+- alidation loss: 0.6468 → 0.5411 (16.3% improvement)
 
 Evaluation Metrics
-ModelNDCG@10Hit Rate@10AutoInt0.662010.63026AutoInt+MLP0.661960.63058
-Performance Analysis:
+Model               NDCG@10            Hit Rate@10
+---------------------------------------------------
+AutoInt             0.66201            0.63026
+AutoInt+MLP         0.66196            0.63058
 
-NDCG (Normalized Discounted Cumulative Gain): 두 모델 모두 약 0.662로 거의 동일
-Hit Rate: AutoInt+MLP가 0.00032 (0.05%) 더 높으나 통계적으로 유의미한 차이는 아님
-두 모델의 성능이 실질적으로 동등하며, 작업 특성에 따라 선택 가능
+Performance Analysis:
+- NDCG (Normalized Discounted Cumulative Gain): 두 모델 모두 약 0.662로 거의 동일
+- Hit Rate: AutoInt+MLP가 0.00032 (0.05%) 더 높으나 통계적으로 유의미한 차이는 아님
+- 두 모델의 성능이 실질적으로 동등하며, 작업 특성에 따라 선택 가능
 
 Implementation Details
+
 1. Data Preprocessing
+```
 python# Label Encoding for categorical features
 label_encoders = {
     'user_id': LabelEncoder(),
@@ -150,7 +162,9 @@ label_encoders = {
 train_size = 0.8
 train_data = data[:int(len(data) * train_size)]
 test_data = data[int(len(data) * train_size):]
+```
 2. Model Training
+```
 python# Model compilation
 model.compile(
     optimizer=Adam(learning_rate=0.0001),
@@ -166,7 +180,9 @@ history = model.fit(
     validation_data=(X_val, y_val),
     verbose=1
 )
+```
 3. Inference Pipeline
+```
 pythondef get_recommendations(user_id, year, month, model, top_k=10):
     # 1. 사용자가 시청하지 않은 영화 필터링
     unseen_movies = filter_unseen_movies(user_id)
@@ -247,73 +263,77 @@ AutoInt_MLP/
 ├── movie_rec_app.py                # Main Streamlit app
 ├── show_st*.py                     # App variations
 └── requirements.txt                # Dependencies
-Installation & Usage
+```
+# Installation & Usage
+
 1. Environment Setup
+```
 bash# Clone repository
 git clone https://github.com/your-username/AutoInt_MLP.git
 cd AutoInt_MLP
-
 # Install dependencies
 pip install -r requirements.txt
+```
 2. Data Preprocessing (First time only)
+```
 bash# Run notebook/data_prepro.ipynb
 jupyter notebook notebook/data_prepro.ipynb
-Input:
-
+```
+Input: 
 data/ml-1m/*.dat (raw data)
 
 Output:
-
 data/ml-1m/*_prepro.csv (preprocessed data)
 data/ml-1m/movielens_rcmm_v2.csv (integrated data)
 
 3. Model Training (First time only)
 Option A: Train AutoInt
+```
 bash# Run notebook/autoint_train.ipynb
 jupyter notebook notebook/autoint_train.ipynb
+```
 Option B: Train AutoInt+MLP
+```
 bash# Run notebook/autoint_mlp_train.ipynb
 jupyter notebook notebook/autoint_mlp_train.ipynb
+```
 Output:
-
-model/autoInt_model_weights.weights.h5
-model/autoIntMLP_model_weights.weights.h5
-data/field_dims.npy
-model/label_encoders.pkl
+- model/autoInt_model_weights.weights.h5
+- model/autoIntMLP_model_weights.weights.h5
+- data/field_dims.npy
+- model/label_encoders.pkl
 
 4. Run Application
+```
 bashstreamlit run movie_rec_app.py
+```
 Required Files:
-
-✅ data/field_dims.npy
-✅ data/label_encoders.pkl
-✅ data/ml-1m/*_prepro.csv
-✅ model/autoInt_model_weights.weights.h5
-✅ model/autoIntMLP_model_weights.weights.h5
-✅ autoint.py
-✅ autointmlp.py
+- data/field_dims.npy
+- data/label_encoders.pkl
+- data/ml-1m/*_prepro.csv
+- model/autoInt_model_weights.weights.h5
+- model/autoIntMLP_model_weights.weights.h5
+- autoint.py
+- autointmlp.py
 
 Key Findings
 1. Model Performance
-
-두 모델 모두 NDCG@10 약 0.662, Hit Rate@10 약 0.63으로 우수한 성능
-AutoInt+MLP의 추가 DNN layer가 성능 향상에 유의미한 영향을 주지 않음
-데이터셋 특성상 attention mechanism만으로도 충분한 feature interaction 학습 가능
+- 두 모델 모두 NDCG@10 약 0.662, Hit Rate@10 약 0.63으로 우수한 성능
+- AutoInt+MLP의 추가 DNN layer가 성능 향상에 유의미한 영향을 주지 않음
+- 데이터셋 특성상 attention mechanism만으로도 충분한 feature interaction 학습 가능
 
 2. Training Stability
-
-5 epoch 내에 안정적인 수렴
-Validation loss가 epoch 4부터 plateau 도달
-Overfitting 징후 없음 (train/val loss 차이 < 0.02)
+- 5 epoch 내에 안정적인 수렴
+- Validation loss가 epoch 4부터 plateau 도달
+- Overfitting 징후 없음 (train/val loss 차이 < 0.02)
 
 3. Inference Efficiency
-
-Batch prediction (2048) 활용으로 효율적인 추론
-6,000명 사용자에 대한 전체 추천 생성 시간 < 10초
-Real-time 추천 가능한 수준의 latency
+- Batch prediction (2048) 활용으로 효율적인 추론
+- 6,000명 사용자에 대한 전체 추천 생성 시간 < 10초
+- Real-time 추천 가능한 수준의 latency
 
 Future Work
-
+```
 Model Enhancement
 
 Extended AutoInt (XDeepFM) 적용
@@ -341,14 +361,18 @@ Docker containerization
 REST API development (FastAPI)
 Model serving with TensorFlow Serving
 Monitoring and logging system
-
-
+```
 
 References
-
-Song, W., Shi, C., Xiao, Z., Duan, Z., Xu, Y., Zhang, M., & Tang, J. (2019). AutoInt: Automatic Feature Interaction Learning via Self-Attentive Neural Networks. CIKM 2019.
-Harper, F. M., & Konstan, J. A. (2015). The MovieLens Datasets: History and Context. ACM Transactions on Interactive Intelligent Systems, 5(4), 1-19.
-Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... & Polosukhin, I. (2017). Attention is all you need. NeurIPS 2017.
+1. Song, W., Shi, C., Xiao, Z., Duan, Z., Xu, Y., Zhang, M., & Tang, J. (2019). AutoInt: Automatic Feature Interaction Learning via Self-Attentive Neural Networks. CIKM 2019.
+2. Harper, F. M., & Konstan, J. A. (2015). The MovieLens Datasets: History and Context. ACM Transactions on Interactive Intelligent Systems, 5(4), 1-19.
+3. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... & Polosukhin, I. (2017). Attention is all you need. NeurIPS 2017.
 
 License
-This project is licensed und
+This project is released into the public domain. 
+You can freely use, modify, and distribute this code for any purpose, including commercial use, without any restrictions or attribution requirements.
+
+Contact
+For questions or collaboration inquiries, please contact [soflywithai@gmail.com]
+
+Note: 본 프로젝트는 학술적 목적으로 개발되었으며, MovieLens 데이터셋 사용 정책을 준수합니다.
