@@ -1,6 +1,5 @@
 ## Movie Recommendation System with AutoInt and AutoInt+MLP
 
-$\color{green}{\text{AutoInt, AutoInt+MLP}}$
 $\color{green}{\text{streamlit run movie_rec_app.py}}$
 
 [ 1 ]  Overview
